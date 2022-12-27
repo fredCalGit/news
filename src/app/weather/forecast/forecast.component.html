@@ -1,1 +1,33 @@
-<p>forecast works!</p>
+<ul class="list-group">
+  <li class="weather-item list-group-item" *ngFor="let forecast of forecast$ | async" (click)="collapse = !collapse">
+    <div class="main">
+      <p class="temp">
+        {{forecast.main.temp | number: '1.0-1'}}°C
+      </p>
+      <p class="day">
+        {{forecast.dateString | date: 'E'}}
+      </p>
+    </div>
+    <div class="details" *ngIf="!collapse">
+      <div class="details-item" aria-label="Feels like">
+        <p class="temp feels-like">
+          {{forecast.main.feels_like| number: '1.0-1'}}°C
+        </p>
+        <p class="day">Feel</p>
+      </div>
+      <div class="details-item" aria-label="Max">
+        <p class="temp temp-max">
+          {{forecast.main.temp_max| number: '1.0-1'}}°C
+        </p>
+        <p class="day">Max</p>
+      </div>
+      <div class="details-item" aria-label="Min">
+
+        <p class="temp temp-min">
+          {{forecast.main.temp_min| number: '1.0-1'}}°C
+        </p>
+        <p class="day">Min</p>
+      </div>
+    </div>
+  </li>
+</ul>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { filter, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
+import { filter, map, mergeMap, Observable, of, share, switchMap, toArray } from 'rxjs';
 
 interface OpenWeatherResponse {
   list: {
@@ -59,7 +59,8 @@ export class ForecastService {
             }
           }
         }),
-        toArray()
+        toArray(),
+        share()
       )
   }
 
