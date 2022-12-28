@@ -5,3 +5,4 @@
     {{article.title | trimOutletName: article.source.name}}
   </a>
 </div>
+<app-paginator [numberOfPages]="numberOfPages" (pageChanged)="onPageChange($event)"></app-paginator>

@@ -8,12 +8,21 @@ import { Article, NewsApiService } from '../news-api.service';
 })
 export class NaArticleListComponent {
   articles: Article[] = []
+  currentPage = 1
+  numberOfPages: number = 5
 
   constructor(private newsApiService: NewsApiService) {
     this.newsApiService.pagesOutput.subscribe((articles) => {
       this.articles = articles
     })
 
-    this.newsApiService.getPage(1)
+    this.newsApiService.getPage(this.currentPage)
+    this.newsApiService.numberOfPages.subscribe(value => { this.numberOfPages = value })
+  }
+
+  onPageChange(newPage: number) {
+    this.currentPage = newPage
+    this.newsApiService.getPage(this.currentPage)
+    console.log(this.numberOfPages)
   }
 }
