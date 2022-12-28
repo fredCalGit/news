@@ -3,7 +3,7 @@ import { catchError, map, Observable, Subject, switchMap, tap, throwError } from
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NotificationsService } from '../notifications/notifications.service';
 
-interface Article {
+export interface Article {
   source: {
     id: string;
     name: string;

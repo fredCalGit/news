@@ -1,1 +1,7 @@
-<p>na-article-list works!</p>
+<h3>Canada News</h3>
+<div class="list-group">
+  <a class="list-group-item list-group-item-action" [href]="article.url" *ngFor="let article of articles"
+    target="_blank">
+    {{article.title | trimOutletName: article.source.name}}
+  </a>
+</div>
