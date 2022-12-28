@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { filter, map, mergeMap, Observable, of, share, switchMap, toArray } from 'rxjs';
+import { catchError, filter, map, mergeMap, Observable, of, share, switchMap, tap, toArray, throwError, retry } from 'rxjs';
+import { NotificationsService } from '../notifications/notifications.service';
 
 interface OpenWeatherResponse {
   list: {
@@ -20,7 +21,7 @@ interface OpenWeatherResponse {
 export class ForecastService {
   private rootUrl = 'https://api.openweathermap.org/data/2.5/forecast'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private notificationsService: NotificationsService) { }
 
   getCurrentLocation() {
     return new Observable<GeolocationCoordinates>((observer) => {
@@ -31,7 +32,13 @@ export class ForecastService {
         },
         (err) => observer.error(err)
       )
-    })
+    }).pipe(
+      tap(() => this.notificationsService.addSuccess('Got your location!')),
+      catchError((err) => {
+        this.notificationsService.addError('Failed to get your location')
+        return throwError(() => new Error(err.message))
+      })
+    )
   }
 
   getForecast() {
@@ -44,7 +51,13 @@ export class ForecastService {
             .set('units', 'metric')
             .set('appid', '82fcee109e90e060c664ccb49cdfeff0')
         }),
-        switchMap(params => this.http.get<OpenWeatherResponse>(this.rootUrl, { params })),
+        switchMap(params => this.http.get<OpenWeatherResponse>(this.rootUrl, { params }).pipe(
+          tap(() => this.notificationsService.addSuccess('Got your forecast!')),
+          catchError((err) => {
+            this.notificationsService.addError('Failed to get your forecast')
+            return throwError(() => new Error(err.message))
+          })
+        )),
         map(value => value?.list),
         mergeMap(value => of(...value)),
         filter((_, index) => index % 8 === 0),

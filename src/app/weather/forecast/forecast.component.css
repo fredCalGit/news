@@ -12,7 +12,7 @@ ul:hover {
   -webkit-box-shadow: 6px 3px 12px 0px rgba(0, 0, 0, 0.32);
   -moz-box-shadow: 6px 3px 12px 0px rgba(0, 0, 0, 0.32);
   transform: translateX(-5%);
-  transition: all ease-in-out 0.1s;
+  transition: all ease-in-out 0.5s;
 }
 i {
   font-size: large;
